@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomeDashBoard extends AppCompatActivity {
 
     // Added cardUpdateStudent
-    private CardView cardAddStudent, cardDeleteStudent, cardUpdateStudent, cardViewStudents, cardDataExchange;
+    private CardView cardAddStudent, cardDeleteStudent, cardUpdateStudent, cardViewStudents, cardDataExchange, cardStudentDetails;
     private ImageButton btnProfile;
     private TextView txtHeader;
 
@@ -51,6 +51,7 @@ public class HomeDashBoard extends AppCompatActivity {
         cardUpdateStudent = findViewById(R.id.cardUpdateStudent);
         cardViewStudents = findViewById(R.id.cardViewStudents);
         cardDataExchange = findViewById(R.id.cardDataExchange);
+        cardStudentDetails = findViewById(R.id.cardStudentDetails);
 
         btnProfile = findViewById(R.id.imageButton2);
         txtHeader = findViewById(R.id.textView2);
@@ -79,9 +80,8 @@ public class HomeDashBoard extends AppCompatActivity {
 
         cardAddStudent.setOnClickListener(v -> showAddStudentDialog());
         cardDeleteStudent.setOnClickListener(v -> showDeleteStudentDialog());
-
-        // Add Listener for Update
         cardUpdateStudent.setOnClickListener(v -> showSearchForUpdateDialog());
+        cardStudentDetails.setOnClickListener(v -> showSearchForDetailsDialog());
     }
 
     private void setupRolePermissions() {
@@ -103,12 +103,12 @@ public class HomeDashBoard extends AppCompatActivity {
             cardDeleteStudent.setVisibility(View.VISIBLE);
             cardUpdateStudent.setVisibility(View.VISIBLE);
             cardDataExchange.setVisibility(View.VISIBLE);
+            cardStudentDetails.setVisibility(View.VISIBLE);
         }
 
         cardViewStudents.setVisibility(View.VISIBLE);
     }
 
-    // ... showAddStudentDialog and saveStudentToFirestore exist here (keeping them same as before) ...
 
     private void showAddStudentDialog() {
         // (Your existing add logic code here)
@@ -164,7 +164,6 @@ public class HomeDashBoard extends AppCompatActivity {
 
     }
 
-    // --- NEW: DELETE LOGIC ---
 
     private void showDeleteStudentDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -225,9 +224,6 @@ public class HomeDashBoard extends AppCompatActivity {
     }
 
 
-    // --- NEW: UPDATE LOGIC ---
-
-    // Step 1: Ask for the ID to find
     private void showSearchForUpdateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Update Student");
@@ -238,7 +234,7 @@ public class HomeDashBoard extends AppCompatActivity {
         inputId.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(inputId);
 
-        builder.setPositiveButton("Find", (dialog, which) -> {
+        builder.setPositiveButton("Search", (dialog, which) -> {
             String sid = inputId.getText().toString().trim();
             if (!sid.isEmpty()) {
                 findStudentForUpdate(sid);
@@ -246,37 +242,77 @@ public class HomeDashBoard extends AppCompatActivity {
                 Toast.makeText(this, "Please enter an ID", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton("Cancel", null);
         builder.show();
     }
 
-    // Step 2: Find the student in database
+    // 2. Search Firestore for the student
     private void findStudentForUpdate(String studentId) {
         db.collection("students")
                 .whereEqualTo("studentId", studentId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot snapshot = task.getResult();
-                        if (snapshot != null && !snapshot.isEmpty()) {
-                            // Found it! Get the first match
-                            DocumentSnapshot doc = snapshot.getDocuments().get(0);
-                            String docId = doc.getId();
-                            String currentName = doc.getString("name");
-                            String currentClass = doc.getString("class");
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Student found! Get the data
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        String docId = doc.getId();
+                        String currentName = doc.getString("name");
+                        String currentClass = doc.getString("class");
 
-                            // Step 3: Show the edit form
-                            showEditStudentDialog(docId, currentName, currentClass);
-                        } else {
-                            Toast.makeText(this, "Student not found!", Toast.LENGTH_SHORT).show();
-                        }
+                        // Proceed to the edit form
+                        showEditStudentDialog(docId, currentName, currentClass);
                     } else {
-                        Toast.makeText(this, "Error searching DB", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Student not found!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    // Step 3: Show dialog with pre-filled data
+
+    private void showSearchForDetailsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Student Details");
+        builder.setMessage("Enter Student ID to view details & certificates:");
+
+        final EditText inputId = new EditText(this);
+        inputId.setHint("Student ID (e.g. S123)");
+        inputId.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(inputId);
+
+        builder.setPositiveButton("View", (dialog, which) -> {
+            String sid = inputId.getText().toString().trim();
+            if (!sid.isEmpty()) {
+                findStudentForDetails(sid);
+            } else {
+                Toast.makeText(this, "Please enter an ID", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    private void findStudentForDetails(String studentId) {
+        db.collection("students")
+                .whereEqualTo("studentId", studentId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+
+                        // Pass data to the new Activity
+                        Intent intent = new Intent(HomeDashBoard.this, StudentDetailsActivity.class);
+                        intent.putExtra("docId", doc.getId()); // Firestore Document ID
+                        intent.putExtra("studentId", studentId);
+                        intent.putExtra("name", doc.getString("name"));
+                        intent.putExtra("class", doc.getString("class"));
+                        intent.putExtra("role", role); // Pass role for permissions inside details
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "Student not found!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    //Show dialog with pre-filled data
     private void showEditStudentDialog(String docId, String oldName, String oldClass) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Edit Student Info");
@@ -311,7 +347,7 @@ public class HomeDashBoard extends AppCompatActivity {
         builder.show();
     }
 
-    // Step 4: Save changes to Firestore
+    //Save changes to Firestore
     private void performUpdate(String docId, String newName, String newClass) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", newName);

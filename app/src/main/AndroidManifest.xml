@@ -35,6 +35,8 @@
         <activity android:name=".HomeDashBoard" />
         <activity android:name=".StudentListActivity" />
         <activity android:name=".DataExchangeActivity" />
+        <activity android:name=".StudentDetailsActivity" />
+
     </application>
 
 </manifest>

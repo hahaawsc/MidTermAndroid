@@ -64,7 +64,6 @@
         app:layout_constraintTop_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- ... existing Add Student Card ... -->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardDeleteStudent"
@@ -88,8 +87,6 @@
     </androidx.cardview.widget.CardView>
 
 
-    <!-- ... existing Delete Student Card ... -->
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardUpdateStudent"
         android:layout_width="0dp"
@@ -109,8 +106,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
-
-    <!-- ... existing Update Student Card ... -->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewStudents"
@@ -148,7 +143,28 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/import_export"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardStudentDetails"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#E91E63"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardDataExchange">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/student_details"
             android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
