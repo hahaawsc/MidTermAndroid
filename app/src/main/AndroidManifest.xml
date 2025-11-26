@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.midterm">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MidTerm" >
+
+        <!-- 1. Add a new activity entry for LoginActivity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <!-- 2. Move the intent-filter here -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".UserProfile" />
+
+        <!-- 3. Remove the intent-filter from MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" /> <!-- It's good practice to set exported to false if it's not a starting point -->
+
+        <activity android:name=".HomeDashBoard" />
+        <activity android:name=".StudentListActivity" />
+    </application>
+
+</manifest>

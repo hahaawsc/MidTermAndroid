@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Login -->
+    <string name="app_name">MidTerm</string>
+    <string name="name_hint_text">Name</string>
+    <string name="password_hint_text">Password</string>
+    <string name="login_text">Login</string>
+
+    <!-- User Profile -->
+    <string name="user_profile_change_photo">Change Profile Picture</string>
+    <string name="user_profile_hint_name">Name</string>
+    <string name="user_profile_hint_age">Age</string>
+    <string name="user_profile_hint_phone">Phone Number</string>
+    <string name="user_profile_save">Save</string>
+    <string name="user_profile_updated">Profile updated!</string>
+    <string name="user_profile_error_data_not_found">Error: User data not found.</string>
+    <string name="user_profile_logout">Logout</string>
+
+    <!-- Home -->
+    <string name="home">Home</string>
+    <string name="profile_button_description">User Profile</string>
+
+    <!-- Add Student -->
+    <string name="add_student">Add Student</string>
+
+    <!-- Delete Student -->
+    <string name="delete_student">Delete Student</string>
+
+    <!-- Update Student -->
+    <string name="update_student">Update Student</string>
+
+    <!-- Search Student -->
+    <string name="search_student">View &amp; Search Students</string>
+
+    <!-- Student List -->
+    <string name="student_list">Student List</string>
+    <string name="search_hint">Search…</string>
+    <string name="sort_name">Sort by Name</string>
+    <string name="sort_id">Sort by ID</string>
+
+
+</resources>
