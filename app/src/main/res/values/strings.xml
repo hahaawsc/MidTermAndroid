@@ -38,5 +38,15 @@
     <string name="sort_name">Sort by Name</string>
     <string name="sort_id">Sort by ID</string>
 
+    <!-- Data Exchange -->
+    <string name="import_export">Import / Export Data</string>
+    <string name="data_exchange">Data Exchange</string>
+    <string name="student_data">Student Data</string>
+    <string name="import_students">Import Students (CSV)</string>
+    <string name="export_students">Export Students (CSV)</string>
+    <string name="certificate_data">Certificate Data</string>
+    <string name="import_certificates">Import Certificates (CSV)</string>
+    <string name="export_certificates">Export Certificates (CSV)</string>
+
 
 </resources>

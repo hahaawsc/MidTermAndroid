@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomeDashBoard extends AppCompatActivity {
 
     // Added cardUpdateStudent
-    private CardView cardAddStudent, cardDeleteStudent, cardUpdateStudent, cardViewStudents;
+    private CardView cardAddStudent, cardDeleteStudent, cardUpdateStudent, cardViewStudents, cardDataExchange;
     private ImageButton btnProfile;
     private TextView txtHeader;
 
@@ -50,6 +50,8 @@ public class HomeDashBoard extends AppCompatActivity {
         cardDeleteStudent = findViewById(R.id.cardDeleteStudent);
         cardUpdateStudent = findViewById(R.id.cardUpdateStudent);
         cardViewStudents = findViewById(R.id.cardViewStudents);
+        cardDataExchange = findViewById(R.id.cardDataExchange);
+
         btnProfile = findViewById(R.id.imageButton2);
         txtHeader = findViewById(R.id.textView2);
 
@@ -64,9 +66,15 @@ public class HomeDashBoard extends AppCompatActivity {
 
         cardViewStudents.setOnClickListener(v -> {
             Intent intent2 = new Intent(HomeDashBoard.this, StudentListActivity.class);
-            intent.putExtra("userId", userId);
-            intent.putExtra("role", role);
+            intent2.putExtra("userId", userId);
+            intent2.putExtra("role", role);
             startActivity(intent2);
+        });
+
+        cardDataExchange.setOnClickListener(v -> {
+            Intent intent3 = new Intent(HomeDashBoard.this, DataExchangeActivity.class);
+            intent3.putExtra("role", role);
+            startActivity(intent3);
         });
 
         cardAddStudent.setOnClickListener(v -> showAddStudentDialog());
@@ -88,12 +96,16 @@ public class HomeDashBoard extends AppCompatActivity {
             cardAddStudent.setVisibility(View.GONE);
             cardDeleteStudent.setVisibility(View.GONE);
             cardUpdateStudent.setVisibility(View.GONE);
+            cardDataExchange.setVisibility(View.GONE);
         } else {
             // Managers and Admins see all
             cardAddStudent.setVisibility(View.VISIBLE);
             cardDeleteStudent.setVisibility(View.VISIBLE);
             cardUpdateStudent.setVisibility(View.VISIBLE);
+            cardDataExchange.setVisibility(View.VISIBLE);
         }
+
+        cardViewStudents.setVisibility(View.VISIBLE);
     }
 
     // ... showAddStudentDialog and saveStudentToFirestore exist here (keeping them same as before) ...
