@@ -1,6 +1,7 @@
 package com.example.midterm;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,18 +88,23 @@ public class StudentDetailsActivity extends AppCompatActivity {
     }
 
     private void loadCertificates() {
-        // Only get certificates for THIS student
-        System.out.println("DEBUG: Loading certificates for studentId: '" + studentId + "'");
+        // DEBUG LOGS
+        System.out.println("DEBUG: APP is looking for studentId: [" + studentId + "]");
+
+        // Let's see what is actually in the database for testing
+        db.collection("certificates").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot d : queryDocumentSnapshots) {
+                System.out.println("DEBUG: DB contains cert for ID: [" + d.getString("studentId") + "]");
+            }
+        });
 
         db.collection("certificates")
                 .whereEqualTo("studentId", studentId)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
-                        System.out.println("DEBUG: Listen failed: " + error.getMessage());
                         return;
                     }
                     if (value != null) {
-                        System.out.println("DEBUG: Found " + value.size() + " certificates"); // <--- Check this in Logcat
                         certificateList.clear();
                         certificateList.addAll(value.getDocuments());
                         adapter.notifyDataSetChanged();

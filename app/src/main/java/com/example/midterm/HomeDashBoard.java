@@ -290,27 +290,31 @@ public class HomeDashBoard extends AppCompatActivity {
         builder.show();
     }
 
-    private void findStudentForDetails(String studentId) {
+    // Inside HomeDashBoard.java
+
+    private void findStudentForDetails(String inputId) {
         db.collection("students")
-                .whereEqualTo("studentId", studentId)
+                .whereEqualTo("studentId", inputId) // Searching by the manual ID field
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
 
-                        // Pass data to the new Activity
                         Intent intent = new Intent(HomeDashBoard.this, StudentDetailsActivity.class);
-                        intent.putExtra("docId", doc.getId()); // Firestore Document ID
-                        intent.putExtra("studentId", studentId);
+
+                        // CRITICAL: Ensure we pass the Manual ID (e.g., "S123"), NOT doc.getId()
+                        intent.putExtra("studentId", doc.getString("studentId"));
+
                         intent.putExtra("name", doc.getString("name"));
                         intent.putExtra("class", doc.getString("class"));
-                        intent.putExtra("role", role); // Pass role for permissions inside details
+                        intent.putExtra("role", role);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(this, "Student not found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Student not found", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 
     //Show dialog with pre-filled data
     private void showEditStudentDialog(String docId, String oldName, String oldClass) {

@@ -95,12 +95,15 @@ public class DataExchangeActivity extends AppCompatActivity {
             InputStream inputStream = getContentResolver().openInputStream(uri);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
-            while ((line = reader.readLine()) != null) {
-                // Expected Format: StudentID,CertificateName,Date
+            while ((line = reader.readLine()) != null) {// CSV Format: StudentID,CertificateName,Date
                 String[] tokens = line.split(",");
                 if (tokens.length >= 3) {
                     Map<String, Object> cert = new HashMap<>();
-                    cert.put("studentId", tokens[0].trim());
+
+                    // CRITICAL: Ensure strict trimming on the ID
+                    String cleanId = tokens[0].trim();
+
+                    cert.put("studentId", cleanId);
                     cert.put("certificateName", tokens[1].trim());
                     cert.put("date", tokens[2].trim());
 
@@ -112,6 +115,7 @@ public class DataExchangeActivity extends AppCompatActivity {
             Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     // --- EXPORT LOGIC ---
 
