@@ -63,5 +63,20 @@
     <string name="edit_certificate">Edit Certificate</string>
     <string name="delete_certificate">Delete Certificate</string>
 
+    <!-- System Users -->
+    <string name="system_users">System Users</string>
+    <string name="system_users_user_name">User Name</string>
+    <string name="system_users_role">Role</string>
+    <string name="system_users_phone">Phone</string>
+
+    <!-- Login History -->
+    <string name="login_history">Login History</string>
+    <string name="login_user_name">user@example.com</string>
+    <string name="login_status">Status:</string>
+    <string name="login_success">Success</string>
+    <string name="login_time">Time:</string>
+
+
+
 
 </resources>

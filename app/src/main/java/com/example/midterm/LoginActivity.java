@@ -16,6 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText nameEditText;
@@ -92,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, HomeDashBoard.class);
                         intent.putExtra("userId", userId);
                         intent.putExtra("role", role);
+
+                        logLoginHistory(userId, mAuth.getCurrentUser().getEmail());
                         startActivity(intent);
                         finish(); // Prevent going back to login
                     } else {
@@ -102,6 +107,16 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Error fetching user role", Toast.LENGTH_SHORT).show();
                 });
     }
+
+    private void logLoginHistory(String userId, String email) {
+        Map<String, Object> log = new HashMap<>();log.put("userId", userId);
+        log.put("email", email);
+        log.put("timestamp", System.currentTimeMillis());
+        log.put("status", "Success");
+
+        db.collection("login_history").add(log);
+    }
+
 
     @Override
     protected void onStart() {

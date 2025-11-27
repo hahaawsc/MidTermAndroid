@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomeDashBoard extends AppCompatActivity {
 
     // Added cardUpdateStudent
-    private CardView cardAddStudent, cardDeleteStudent, cardUpdateStudent, cardViewStudents, cardDataExchange, cardStudentDetails;
+    private CardView cardAddStudent, cardDeleteStudent, cardUpdateStudent, cardViewStudents, cardDataExchange, cardStudentDetails, cardSystemUsers, cardLoginHistory;
     private ImageButton btnProfile;
     private TextView txtHeader;
 
@@ -52,6 +52,8 @@ public class HomeDashBoard extends AppCompatActivity {
         cardViewStudents = findViewById(R.id.cardViewStudents);
         cardDataExchange = findViewById(R.id.cardDataExchange);
         cardStudentDetails = findViewById(R.id.cardStudentDetails);
+        cardSystemUsers = findViewById(R.id.cardSystemUsers);
+        cardLoginHistory = findViewById(R.id.cardLoginHistory);
 
         btnProfile = findViewById(R.id.imageButton2);
         txtHeader = findViewById(R.id.textView2);
@@ -76,6 +78,20 @@ public class HomeDashBoard extends AppCompatActivity {
             Intent intent3 = new Intent(HomeDashBoard.this, DataExchangeActivity.class);
             intent3.putExtra("role", role);
             startActivity(intent3);
+        });
+
+        cardSystemUsers.setOnClickListener(v -> {
+            Intent intentUsers = new Intent(HomeDashBoard.this, SystemUsersActivity.class);
+            intentUsers.putExtra("userId", userId);
+            intentUsers.putExtra("role", role);
+            startActivity(intentUsers);
+        });
+
+        cardLoginHistory.setOnClickListener(v -> {
+            Intent intentHistory = new Intent(HomeDashBoard.this, LoginHistoryActivity.class);
+            intentHistory.putExtra("userId", userId);
+            intentHistory.putExtra("role", role);
+            startActivity(intentHistory);
         });
 
         cardAddStudent.setOnClickListener(v -> showAddStudentDialog());

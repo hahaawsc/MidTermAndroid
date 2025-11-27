@@ -88,15 +88,6 @@ public class StudentDetailsActivity extends AppCompatActivity {
     }
 
     private void loadCertificates() {
-        // DEBUG LOGS
-        System.out.println("DEBUG: APP is looking for studentId: [" + studentId + "]");
-
-        // Let's see what is actually in the database for testing
-        db.collection("certificates").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot d : queryDocumentSnapshots) {
-                System.out.println("DEBUG: DB contains cert for ID: [" + d.getString("studentId") + "]");
-            }
-        });
 
         db.collection("certificates")
                 .whereEqualTo("studentId", studentId)
