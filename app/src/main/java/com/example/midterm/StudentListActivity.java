@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,9 @@ public class StudentListActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             Toast.makeText(this, "Sorted by ID", Toast.LENGTH_SHORT).show();
         });
+
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void loadStudents() {

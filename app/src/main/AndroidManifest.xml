@@ -36,6 +36,8 @@
         <activity android:name=".StudentListActivity" />
         <activity android:name=".DataExchangeActivity" />
         <activity android:name=".StudentDetailsActivity" />
+        <activity android:name=".SystemUsersActivity" />
+        <activity android:name=".LoginHistoryActivity" />
 
     </application>
 

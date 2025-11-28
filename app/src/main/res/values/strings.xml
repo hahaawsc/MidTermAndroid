@@ -16,6 +16,7 @@
     <string name="user_profile_error_data_not_found">Error: User data not found.</string>
     <string name="user_profile_logout">Logout</string>
 
+
     <!-- Home -->
     <string name="home">Home</string>
     <string name="profile_button_description">User Profile</string>
@@ -76,7 +77,7 @@
     <string name="login_success">Success</string>
     <string name="login_time">Time:</string>
 
-
+    <string name="back">Back</string>
 
 
 </resources>

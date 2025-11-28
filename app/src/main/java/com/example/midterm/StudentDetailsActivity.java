@@ -85,6 +85,10 @@ public class StudentDetailsActivity extends AppCompatActivity {
 
         // Add Button Logic
         btnAddCert.setOnClickListener(v -> showCertificateDialog(null, null, null));
+
+        // Inside onCreate
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void loadCertificates() {

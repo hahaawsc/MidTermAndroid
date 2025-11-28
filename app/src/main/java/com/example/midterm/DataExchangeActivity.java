@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -51,6 +52,9 @@ public class DataExchangeActivity extends AppCompatActivity {
 
         btnImportCertificates.setOnClickListener(v -> importCertificateLauncher.launch("text/*"));
         btnExportCertificates.setOnClickListener(v -> exportCertificatesToCSV());
+
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void setupFilePickers() {
