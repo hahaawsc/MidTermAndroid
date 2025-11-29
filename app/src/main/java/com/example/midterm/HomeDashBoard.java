@@ -79,9 +79,18 @@ public class HomeDashBoard extends AppCompatActivity {
         });
 
         cardAddStudent.setOnClickListener(v -> showAddStudentDialog());
-        cardDeleteStudent.setOnClickListener(v -> showDeleteStudentDialog());
-        cardUpdateStudent.setOnClickListener(v -> showSearchForUpdateDialog());
         cardStudentDetails.setOnClickListener(v -> showSearchForDetailsDialog());
+
+        cardDeleteStudent.setOnClickListener(v -> {
+            Intent intent4 = new Intent(HomeDashBoard.this, DeleteStudentActivity.class);
+            startActivity(intent4);
+        });
+
+        cardUpdateStudent.setOnClickListener(v -> {
+            Intent intent4 = new Intent(HomeDashBoard.this, UpdateStudentActivity.class);
+            startActivity(intent4);
+        });
+
     }
 
     private void setupRolePermissions() {
@@ -164,108 +173,6 @@ public class HomeDashBoard extends AppCompatActivity {
 
     }
 
-
-    private void showDeleteStudentDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete Student");
-        builder.setMessage("Enter the Student ID to delete:");
-
-        // Simple input field for ID
-        final EditText inputId = new EditText(this);
-        inputId.setHint("Student ID (e.g., S123)");
-        inputId.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(inputId);
-
-        builder.setPositiveButton("Delete", (dialog, which) -> {
-            String sid = inputId.getText().toString().trim();
-            if (!sid.isEmpty()) {
-                confirmDeleteStudent(sid);
-            } else {
-                Toast.makeText(this, "Please enter an ID", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
-    private void confirmDeleteStudent(String studentId) {
-        // 1. Query Firestore to find the document with this studentId
-        db.collection("students")
-                .whereEqualTo("studentId", studentId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot snapshot = task.getResult();
-                        if (snapshot != null && !snapshot.isEmpty()) {
-                            // 2. Found the student, get the document ID (not the studentId field)
-                            String docId = snapshot.getDocuments().get(0).getId();
-
-                            // 3. Perform the actual delete
-                            deleteStudentDocument(docId);
-                        } else {
-                            Toast.makeText(HomeDashBoard.this, "Student not found with ID: " + studentId, Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(HomeDashBoard.this, "Error finding student", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void deleteStudentDocument(String docId) {
-        db.collection("students").document(docId)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(HomeDashBoard.this, "Student deleted successfully!", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(HomeDashBoard.this, "Error deleting: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
-
-    private void showSearchForUpdateDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update Student");
-        builder.setMessage("Enter Student ID to update:");
-
-        final EditText inputId = new EditText(this);
-        inputId.setHint("Student ID (e.g. S123)");
-        inputId.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(inputId);
-
-        builder.setPositiveButton("Search", (dialog, which) -> {
-            String sid = inputId.getText().toString().trim();
-            if (!sid.isEmpty()) {
-                findStudentForUpdate(sid);
-            } else {
-                Toast.makeText(this, "Please enter an ID", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-    }
-
-    // 2. Search Firestore for the student
-    private void findStudentForUpdate(String studentId) {
-        db.collection("students")
-                .whereEqualTo("studentId", studentId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        // Student found! Get the data
-                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                        String docId = doc.getId();
-                        String currentName = doc.getString("name");
-                        String currentClass = doc.getString("class");
-
-                        // Proceed to the edit form
-                        showEditStudentDialog(docId, currentName, currentClass);
-                    } else {
-                        Toast.makeText(this, "Student not found!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
 
     private void showSearchForDetailsDialog() {
